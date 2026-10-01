@@ -51,4 +51,7 @@ jobs:
         env:
           TEST_KEYSTORE_B64: ${{ secrets.TEST_KEYSTORE_B64 }}
           TEST_KEYSTORE_PASS: ${{ secrets.TEST_KEYSTORE_PASS }}
-        run: scripts/sign-test.sh "NONOS-${GITHUB_REF_NAME//\//-}"
+        # A repository without the test key, such as the public one, skips this copy.
+        run: |
+          [ -n "$TEST_KEYSTORE_B64" ] || { echo "no test key in this repository"; exit 0; }
+          scripts/sign-test.sh "NONOS-${GITHUB_REF_NAME//\//-}"
