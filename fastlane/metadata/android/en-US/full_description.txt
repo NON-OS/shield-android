@@ -1,0 +1,23 @@
+NØNOS Wallet holds NOX and ETH in NOX Shield, a private pool on Ethereum, and an ordinary public account beside it.
+
+A private transfer is proved on the phone with a STARK, a hash-based proof with no trusted setup, and the pool verifies it on chain. Inside the pool, a transfer shows the chain neither sender, receiver nor amount. Timing can still link a deposit to a later transfer, and the app says so.
+
+Every byte to the network goes through a Tor client built into the app. There is no server of ours that sees your balance, and no proxy app to install.
+
+What it does:
+- Receive privately at a post-quantum address, shown as a QR code.
+- Shield NOX or ETH from the public account, in standard amounts.
+- Send privately or withdraw. The fee comes from the pool, never typed, and is checked against the pool before any proving starts.
+- Hand the proof to the lander over Tor, or settle it yourself from the public account.
+- See how private a spend is with the privacy meter, and get a fresh address for each withdrawal.
+- Send, receive and swap ETH, NOX and USDC on the public account.
+
+How it keeps the keys:
+- The recovery words seal the wallet under a key held by the secure hardware of the phone, in a separate security chip where the phone has one.
+- Every send is confirmed with your fingerprint, face or screen lock.
+- Screenshots and screen recording are blocked unless you allow them, and the recovery words stay hidden either way.
+- Nothing is backed up to a cloud. The words are the backup.
+
+No analytics, no crash reporter, no advertising, no Google account needed.
+
+The shield runs on the Sepolia test network, and its tokens have no value. The public account moves real money on Ethereum mainnet. Nothing has been audited. The app is free software under the AGPL, and every release is built twice and compared byte for byte.
