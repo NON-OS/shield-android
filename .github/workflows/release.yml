@@ -1,0 +1,54 @@
+# A release build on a runner, kept for whoever runs it by hand. It publishes
+# nothing: releases are built on the build server, signed on the machine that
+# holds the release key and published from there (docs/04-release.md).
+name: release
+
+on:
+  push:
+    tags: ["v*"]
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  apk:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: "17"
+
+      - uses: ./.github/actions/core
+        with:
+          ssh-key: ${{ secrets.CORE_DEPLOY_KEY }}
+
+      - name: Tests
+        run: ./gradlew --no-daemon :app:testDebugUnitTest
+
+      - name: Assemble the release package and bundle
+        run: ./gradlew --no-daemon :app:assembleRelease :app:bundleRelease
+
+      - name: The package holds nothing it should not, and the core it needs
+        run: |
+          scripts/check-manifest.sh
+          scripts/check-package.sh
+
+      - name: Unsigned and aligned, with the hashes the release key signs against
+        run: |
+          name="NONOS-${GITHUB_REF_NAME//\//-}"
+          scripts/align-release.sh app/build/outputs/apk/release/app-release-unsigned.apk \
+            "$name-unsigned.apk"
+          cp app/build/outputs/bundle/release/app-release.aab "$name-unsigned.aab"
+          sha256sum "$name-unsigned.apk" | tee "$name-unsigned.apk.sha256"
+          sha256sum "$name-unsigned.aab" | tee "$name-unsigned.aab.sha256"
+
+      - name: Sign a copy with the test key, until the release key exists
+        if: hashFiles('release-certificate.sha256') == ''
+        env:
+          TEST_KEYSTORE_B64: ${{ secrets.TEST_KEYSTORE_B64 }}
+          TEST_KEYSTORE_PASS: ${{ secrets.TEST_KEYSTORE_PASS }}
+        run: scripts/sign-test.sh "NONOS-${GITHUB_REF_NAME//\//-}"

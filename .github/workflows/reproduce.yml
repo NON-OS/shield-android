@@ -1,0 +1,51 @@
+# Two builds of one commit, compared byte for byte and with the file the release
+# job published for the tag. The release key signs that file only after this
+# job passes. A second person on a second machine is docs/03-reproduce.md.
+name: reproduce
+
+# Two full builds is the most expensive job here, so it runs on release tags
+# and on demand, not on every push.
+on:
+  push:
+    tags: ["v*"]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  twice:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: 17
+
+      - uses: ./.github/actions/core
+        with:
+          ssh-key: ${{ secrets.CORE_DEPLOY_KEY }}
+
+      - name: First build
+        run: scripts/build-release.sh "$RUNNER_TEMP/one"
+
+      - name: Second build
+        run: scripts/build-release.sh "$RUNNER_TEMP/two"
+
+      - name: The two packages are the same bytes
+        run: scripts/same-bytes.sh "$RUNNER_TEMP/one.apk" "$RUNNER_TEMP/two.apk"
+
+      - name: The two bundles are the same bytes
+        run: scripts/same-bytes.sh "$RUNNER_TEMP/one.aab" "$RUNNER_TEMP/two.aab"
+
+      - name: The package carries its own provenance and licences
+        run: scripts/check-package.sh
+
+      # The release job built the same tag on another runner.
+      - name: The published package is this build
+        if: startsWith(github.ref, 'refs/tags/')
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: scripts/same-as-published.sh "$GITHUB_REF_NAME" "$RUNNER_TEMP/one.apk"
