@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  The palette, from the brand book at nonos.software/brand, where every colour
+  has a job. No colour here was invented and none was sampled from a
+  screenshot. The names are the book's names so the two can be diffed by eye.
+
+  Technical Blue is deliberately absent: it marks engineering material and is
+  never the product speaking.
+-->
+<resources>
+    <color name="cyan">#66ffff</color>
+    <color name="ink">#0a0b0d</color>
+    <color name="deep_teal">#2e5c5c</color>
+    <color name="paper">#f2f3f7</color>
+    <color name="on_ink">#f2f3f7</color>
+    <color name="on_ink_muted">#8af2f3f7</color>
+    <color name="surface">#0dffffff</color>
+    <color name="line">#1fffffff</color>
+</resources>

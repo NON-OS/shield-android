@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  Whether the window refuses to be captured. True everywhere that ships: the
+  secure flag goes on before the first frame, so no screenshot, screen
+  recording or adb capture of this app can contain anything.
+
+  The capture build type overrides this to false so the app can be filmed. It
+  carries its own application id and is never distributed.
+-->
+<resources>
+    <bool name="block_screen_capture">true</bool>
+</resources>

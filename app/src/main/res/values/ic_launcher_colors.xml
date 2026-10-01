@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!--
+      tokens.css, the cyan token. The icon is the mark as the site draws it at
+      icon size: a cyan field with the glyph knocked out, not a small mark
+      floating on a dark square.
+    -->
+    <color name="ic_launcher_background">#66FFFF</color>
+</resources>

@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  The one difference between this build and the one that ships. Footage of the
+  app can only exist because this is false here, which is why anything filmed
+  from this build carries that on screen.
+-->
+<resources>
+    <bool name="block_screen_capture">false</bool>
+</resources>

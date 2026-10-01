@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!--
+      The window's colours, from tokens.css: the dark token for the surface the app
+      sits on. Compose paints everything above this; the theme matters for the
+      frame that is drawn before the first composition.
+    -->
+    <style name="Theme.NoxShield" parent="android:Theme.Material.NoActionBar">
+        <item name="android:windowBackground">@color/ink</item>
+        <item name="android:statusBarColor">@color/ink</item>
+        <item name="android:navigationBarColor">@color/ink</item>
+        <item name="android:colorControlNormal">@color/on_ink</item>
+    </style>
+</resources>

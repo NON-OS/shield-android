@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <!--
+      Three permissions, all of them install time, and every one written here
+      rather than arriving from a library during the merge. The wallet reaches
+      the network only through its own embedded Tor: no contacts, no storage, no
+      location, no identifiers.
+    -->
+    <uses-permission android:name="android.permission.INTERNET" />
+
+    <!--
+      The system prompt that confirms the user before the keystore will use the
+      key holding the seed. It grants no access to biometric data, which stays
+      with the platform.
+    -->
+    <uses-permission android:name="android.permission.USE_BIOMETRIC" />
+
+    <!--
+      The same prompt on API 28, which predates the one above. The replacement
+      is what bounds it: without it the prompt library declares the permission
+      with no ceiling and the app carries it on every device that no longer
+      uses it.
+    -->
+    <uses-permission
+        android:name="android.permission.USE_FINGERPRINT"
+        android:maxSdkVersion="28"
+        tools:node="replace" />
+
+    <application
+        android:name=".ShieldApp"
+        android:allowBackup="false"
+        android:dataExtractionRules="@xml/data_extraction_rules"
+        android:fullBackupContent="false"
+        android:hasFragileUserData="true"
+        android:icon="@mipmap/ic_launcher"
+        android:label="@string/app_name"
+        android:networkSecurityConfig="@xml/network_security_config"
+        android:supportsRtl="true"
+        android:theme="@style/Theme.NoxShield"
+        android:usesCleartextTraffic="false">
+
+        <activity
+            android:name=".MainActivity"
+            android:configChanges="orientation|screenSize|screenLayout|keyboardHidden|uiMode"
+            android:excludeFromRecents="false"
+            android:exported="true"
+            android:launchMode="singleTask"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustResize">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+
+        <!--
+          Shares a measured proof and its public words, and nothing else: the
+          paths file names only the export folder, the provider is not
+          exported, and a file is readable by the app it is shared to only for
+          that one share.
+        -->
+        <provider
+            android:name="androidx.core.content.FileProvider"
+            android:authorities="${applicationId}.proofs"
+            android:exported="false"
+            android:grantUriPermissions="true">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/proof_paths" />
+        </provider>
+    </application>
+</manifest>

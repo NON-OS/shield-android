@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  Nothing leaves the device through backup or transfer. The vault is sealed
+  under a key inside the secure element, so a backup of it would restore to a
+  file nothing can open, and the note store would be a copy of the wallet's
+  history sitting in somebody else's cloud.
+-->
+<data-extraction-rules>
+    <cloud-backup>
+        <exclude domain="root" />
+    </cloud-backup>
+    <device-transfer>
+        <exclude domain="root" />
+    </device-transfer>
+</data-extraction-rules>

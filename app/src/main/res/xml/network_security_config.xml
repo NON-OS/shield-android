@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  Every connection is made by the Tor client inside the core, which this file
+  does not govern. It holds anything on the platform stack to encrypted traffic
+  and the system certificates, never one a user or a profile installed.
+-->
+<network-security-config>
+    <base-config cleartextTrafficPermitted="false">
+        <trust-anchors>
+            <certificates src="system" />
+        </trust-anchors>
+    </base-config>
+</network-security-config>
