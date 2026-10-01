@@ -1,0 +1,28 @@
+root = true
+
+[*.{kt,kts}]
+indent_size = 4
+max_line_length = 100
+
+# The app is an Android app and is formatted the way Android Studio formats,
+# so ktlint is held to that style rather than to its own house style, whose
+# signature and expression wrapping rules disagree with the IDE every save.
+ktlint_code_style = android_studio
+
+ktlint_standard_no-wildcard-imports = enabled
+ktlint_standard_filename = disabled
+
+# Composable functions are PascalCase by Compose convention, which is the
+# naming the rule exempts when told which annotation marks it.
+ktlint_function_naming_ignore_when_annotated_with = Composable
+
+# Trailing commas stay: the sources are written with them, and a trailing
+# comma makes adding the next argument a one line diff instead of two.
+ij_kotlin_allow_trailing_comma = true
+ij_kotlin_allow_trailing_comma_on_call_site = true
+
+# The UniFFI bindings are written by the bindgen in scripts/build-core.sh and
+# rewritten every time the core is rebuilt, so holding them to a style hides
+# the findings in the files somebody actually edits.
+[app/src/main/generated/**/*.kt]
+ktlint = disabled

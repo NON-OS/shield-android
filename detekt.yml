@@ -1,0 +1,58 @@
+# The shell holds presentation only, so the rules that matter here are the ones
+# that catch logic sneaking in: long methods, complex conditions, swallowed
+# exceptions.
+build:
+  maxIssues: 0
+
+complexity:
+  LongMethod:
+    active: true
+    threshold: 40
+  LongParameterList:
+    active: true
+    functionThreshold: 5
+  CyclomaticComplexMethod:
+    active: true
+    threshold: 8
+    # A function whose whole body is one when over a sealed type or an enum is
+    # a dispatch table, and the compiler is checking it is exhaustive. Counting
+    # each case as a branch would push the mapping functions apart into
+    # something harder to read than the table they replace.
+    ignoreSingleWhenExpression: true
+
+exceptions:
+  SwallowedException:
+    active: true
+  TooGenericExceptionCaught:
+    active: true
+
+naming:
+  # Composable functions are PascalCase by Compose convention, and the screens
+  # are all composables, so the rule is told which annotation marks them
+  # rather than switched off.
+  FunctionNaming:
+    active: true
+    ignoreAnnotated:
+      - "Composable"
+
+style:
+  # A key custody function that cannot get its key returns early and says so.
+  # Folding those refusals into nested branches would make the path harder to
+  # read, which is the wrong trade in the file that holds the wrapping key.
+  ReturnCount:
+    active: true
+    max: 2
+    excludeGuardClauses: true
+  MagicNumber:
+    active: true
+    ignorePropertyDeclaration: true
+  ForbiddenComment:
+    active: true
+    comments:
+      - reason: "A wallet does not ship with unfinished work marked in a comment."
+        value: "TODO"
+      - reason: "Same."
+        value: "FIXME"
+  MaxLineLength:
+    active: true
+    maxLineLength: 100

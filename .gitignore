@@ -1,0 +1,28 @@
+.gradle/
+.kotlin/
+build/
+captures/
+local.properties
+# The core's library and its generated bindings are build outputs, made by
+# scripts/build-core.sh from the core checkout.
+app/src/main/jniLibs/
+app/src/main/generated/
+.idea/
+*.iml
+# A signing key or the properties file that points at one never lands in a
+# repository.
+*.keystore
+*.jks
+*.p12
+keystore.properties
+signing.properties
+# Nor a built artefact, wherever it is written.
+*.apk
+*.aab
+# No secret ever lands here, so the file that usually carries one cannot.
+.env
+.env.*
+result
+result-*
+.DS_Store
+._*
