@@ -1,0 +1,50 @@
+# Every entry is pinned. A range would make two builds of one tag differ, and a
+# reproducible build is the sixth gate.
+[versions]
+agp = "8.13.2"
+kotlin = "2.0.21"
+compose-bom = "2024.12.01"
+activity-compose = "1.9.3"
+lifecycle = "2.8.7"
+jna = "5.18.1"
+coroutines = "1.9.0"
+biometric = "1.1.0"
+ktlint = "12.1.1"
+detekt = "1.23.7"
+junit = "4.13.2"
+zxing = "3.5.3"
+
+[libraries]
+activity-compose = { module = "androidx.activity:activity-compose", version.ref = "activity-compose" }
+compose-bom = { module = "androidx.compose:compose-bom", version.ref = "compose-bom" }
+compose-material3 = { module = "androidx.compose.material3:material3" }
+# The transition between two screens. It is part of Compose, versioned by the
+# same bill of materials, and already on the classpath under material3; it is
+# named here because the app uses it directly and a dependency the build does
+# not declare is a dependency nobody reviews.
+compose-animation = { module = "androidx.compose.animation:animation" }
+compose-ui = { module = "androidx.compose.ui:ui" }
+compose-ui-tooling-preview = { module = "androidx.compose.ui:ui-tooling-preview" }
+lifecycle-runtime-compose = { module = "androidx.lifecycle:lifecycle-runtime-compose", version.ref = "lifecycle" }
+lifecycle-viewmodel-compose = { module = "androidx.lifecycle:lifecycle-viewmodel-compose", version.ref = "lifecycle" }
+coroutines-android = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-android", version.ref = "coroutines" }
+# The binding layer the generated Kotlin uses to reach the Rust core. It opens
+# no socket and reads no identifier; it is a foreign function interface.
+jna = { module = "net.java.dev.jna:jna", version.ref = "jna" }
+# The system authentication prompt, which is the only way to satisfy a keystore
+# key that requires the user to be present. It is part of AndroidX, needs no
+# Google account and reaches no network; the alternative is the framework class
+# whose device credential support only arrives at API 30, above this app's floor.
+biometric = { module = "androidx.biometric:biometric", version.ref = "biometric" }
+# The unit test runner. It runs on the build machine, is never packaged, and
+# is here because this module now has decisions of its own to assert: what a
+# core failure says on screen, and how a long value is broken up to be read.
+junit = { module = "junit:junit", version.ref = "junit" }
+zxing-core = { module = "com.google.zxing:core", version.ref = "zxing" }
+
+[plugins]
+android-application = { id = "com.android.application", version.ref = "agp" }
+kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
+kotlin-compose = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin" }
+ktlint = { id = "org.jlleitschuh.gradle.ktlint", version.ref = "ktlint" }
+detekt = { id = "io.gitlab.arturbosch.detekt", version.ref = "detekt" }
